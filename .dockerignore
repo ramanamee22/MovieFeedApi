@@ -1,0 +1,9 @@
+node_modules
+coverage
+npm-debug.log
+.env
+.git
+__tests__
+Dockerfile.dev
+docker-compose.yml
+docker-compose.override.yml
