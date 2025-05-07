@@ -3,12 +3,34 @@ const { allMovies, getMovie, getRating } = require('../db');
 const CustomApiError = require('../utils/createError');
 const { formatBudget: formatMovieBudget } = require('../utils/format');
 
+// Define TypeScript interfaces for response types
+interface Movie {
+  imdbId: string;
+  title: string;
+  genres: string[];
+  releaseDate: string;
+  budget: string;
+}
+
+interface MovieDetails extends Movie {
+  description: string;
+  runtime: number;
+  averageRating: number;
+  originalLanguage: string;
+  productionCompanies: string[];
+}
+
+interface PaginatedResponse<T> {
+  page: number;
+  data: T[];
+}
+
 /**
  * List all movies with pagination
  * @param {number} page
- * @returns {Promise<{ page: number, data: Array }>} list of movies and paging info
+ * @returns {Promise<PaginatedResponse<Movie>>} list of movies and paging info
  */
-async function listAllMovies(page = 1) {
+async function listAllMovies(page = 1): Promise<PaginatedResponse<Movie>> {
   if (page < 1) page = 1;
   const limit = 50;
   const offset = (page - 1) * limit;
@@ -32,9 +54,9 @@ async function listAllMovies(page = 1) {
 /**
  * Get details for a single movie by IMDb ID
  * @param {string} imdbId
- * @returns {Promise<Object>} detailed movie data
+ * @returns {Promise<MovieDetails>} detailed movie data
  */
-async function getMovieDetails(imdbId) {
+async function getMovieDetails(imdbId: string): Promise<MovieDetails> {
   const sql = 'SELECT * FROM movies WHERE imdbId = ?';
   const movie = await getMovie(sql, [imdbId]);
   if (!movie) throw new CustomApiError(404, 'Movie not found');
@@ -63,9 +85,9 @@ async function getMovieDetails(imdbId) {
  * @param {string} year Four-digit year string
  * @param {number} page
  * @param {string} order 'ASC' or 'DESC'
- * @returns {Promise<{ page: number, data: Array }>} list of movies and paging info
+ * @returns {Promise<PaginatedResponse<Movie>>} list of movies and paging info
  */
-async function listMoviesByYear(year, page = 1, order = 'ASC') {
+async function listMoviesByYear(year: string, page = 1, order = 'ASC'): Promise<PaginatedResponse<Movie>> {
   if (page < 1) page = 1;
   const limit = 50;
   const offset = (page - 1) * limit;
@@ -91,9 +113,9 @@ async function listMoviesByYear(year, page = 1, order = 'ASC') {
  * List movies by genre with pagination
  * @param {string} genre Genre name (case-insensitive)
  * @param {number} page
- * @returns {Promise<{ page: number, data: Array }>} list of movies and paging info
+ * @returns {Promise<PaginatedResponse<Movie>>} list of movies and paging info
  */
-async function listMoviesByGenre(genre, page = 1) {
+async function listMoviesByGenre(genre: string, page = 1): Promise<PaginatedResponse<Movie>> {
   if (page < 1) page = 1;
   const limit = 50;
   const offset = (page - 1) * limit;

@@ -10,8 +10,8 @@ The **MovieFeed API** is a RESTful API built on top of SQLite databases to provi
 
 - **List All Movies**: Paginated list of movies with details like IMDb ID, title, genres, release date, and budget.
 - **Movie Details**: Fetch detailed information about a specific movie, including ratings and production details.
-- **Movies By Year**: List movies released in a specific year, with optional sorting.
-- **Movies By Genre**: Fetch movies by genre, with pagination support.
+- **Movies By Year**: Filter movies by release year using query parameters (`year` and optional `order`).
+- **Movies By Genre**: Filter movies by genre using query parameters (`genre`).
 
 ---
 
@@ -94,19 +94,17 @@ The **MovieFeed API** is a RESTful API built on top of SQLite databases to provi
      ```
 
 ### 3. **Movies By Year**
-   - **Endpoint**: `GET /movies/year/:year`
-   - **Path Params**:
-     - `year`: Year of release.
+   - **Endpoint**: `GET /movies`
    - **Query Params**:
+     - `year` (optional): Year of release.
      - `page` (optional): Page number (default: 1).
      - `order` (optional): Sorting order (`asc` or `desc`).
    - **Response**: Similar to "List All Movies".
 
 ### 4. **Movies By Genre**
-   - **Endpoint**: `GET /movies/genre/:genre`
-   - **Path Params**:
-     - `genre`: Genre name.
+   - **Endpoint**: `GET /movies`
    - **Query Params**:
+     - `genre` (optional): Genre name.
      - `page` (optional): Page number (default: 1).
    - **Response**: Similar to "List All Movies".
 
