@@ -24,15 +24,15 @@ describe('Movies API routes', () => {
     expect(res.body.error).toHaveProperty('message', 'Movie not found');
   });
 
-  test('GET /movies?year=1977 returns list', async () => {
-    const res = await request(app).get('/movies?year=1977&page=1&order=asc');
+  test('GET /movies/year/:year returns list', async () => {
+    const res = await request(app).get('/movies/year/1977?page=1&order=asc');
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.meta.page).toBe(1);
   });
 
-  test('GET /movies?genre=Drama returns list', async () => {
-    const res = await request(app).get('/movies?genre=Drama&page=1');
+  test('GET /movies/genre/:genre returns list', async () => {
+    const res = await request(app).get('/movies/genre/Drama?page=1');
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.meta.page).toBe(1);

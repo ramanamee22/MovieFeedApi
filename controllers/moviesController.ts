@@ -8,23 +8,8 @@ const { success, badRequest } = require('../utils/responseHandler');
  */
 exports.listAllMovies = async (req, res, next) => {
   try {
-    // Pagination and optional filters via query params
     const page = parseInt(req.query.page, 10) || 1;
-    const year = req.query.year;
-    const genre = req.query.genre;
-    let result;
-    if (year) {
-      // Filter by year with optional sort order
-      const order = req.query.order && String(req.query.order).toLowerCase() === 'desc' ? 'DESC' : 'ASC';
-      result = await movieService.listMoviesByYear(String(year), page, order);
-    } else if (genre) {
-      // Filter by genre
-      result = await movieService.listMoviesByGenre(String(genre), page);
-    } else {
-      // No filters, list all movies
-      result = await movieService.listAllMovies(page);
-    }
-    const { page: currentPage, data } = result;
+    const { page: currentPage, data } = await movieService.listAllMovies(page);
     return success(res, data, { page: currentPage });
   } catch (err) {
     next(err);
